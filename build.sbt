@@ -23,9 +23,6 @@ libraryDependencies += "org.scala-lang.virtualized" % "scala-library" % virtScal
 
 libraryDependencies += "org.scala-lang.virtualized" % "scala-compiler" % virtScala
 
-libraryDependencies += scalaTest
-
-
 // tests are not thread safe
 parallelExecution in Test := false
 
@@ -36,6 +33,19 @@ publishArtifact in (Compile, packageDoc) := false
 // continuations
 autoCompilerPlugins := true
 
-addCompilerPlugin("org.scala-lang.virtualized.plugins" % "continuations" % virtScala)
+libraryDependencies += ("org.scala-lang.virtualized" % "scala-compiler" % virtScala).
+  exclude ("org.scala-lang", "scala-library").
+  exclude ("org.scala-lang", "scala-compiler")
+
+libraryDependencies += ("org.scala-lang.plugins" % "scala-continuations-library_2.11" % "1.0.2").
+  exclude ("org.scala-lang", "scala-library").
+  exclude ("org.scala-lang", "scala-compiler")
+
+libraryDependencies += ("org.scalatest" % "scalatest_2.11" % "2.2.2").
+  exclude ("org.scala-lang", "scala-library").
+  exclude ("org.scala-lang", "scala-compiler").
+  exclude ("org.scala-lang", "scala-reflect")
+
+addCompilerPlugin("org.scala-lang.plugins" % "scala-continuations-plugin_2.11.2" % "1.0.2")
 
 scalacOptions += "-P:continuations:enable"
